@@ -79,7 +79,7 @@ void ApplicationUI::onThumbnail()
 
 void ApplicationUI::onTimer()
 {
-    qDebug() << "Invoke";
+    qDebug() << "Invoke after 2 seconds";
 
     //invoke Clock app
      bb::system::InvokeRequest request;
@@ -129,6 +129,8 @@ void ApplicationUI::onTimer()
 
 void ApplicationUI::click()
 {
+    qDebug() << "Invoking directly";
+
     //invoke Clock app
      bb::system::InvokeRequest request;
      request.setTarget("bb.clock.launcher");

@@ -15,19 +15,36 @@
  */
 
 #include "applicationui.hpp"
+#include "Console.h"
 
 #include <bb/cascades/Application>
 
 #include <QLocale>
 #include <QTranslator>
+#include <QSettings>
 
 #include <Qt/qdeclarativedebug.h>
 
 using namespace bb::cascades;
 
+void myMessageOutput(QtMsgType type, const char* msg) {
+    Q_UNUSED(type);
+    fprintf(stdout, "%s\n", msg);
+    fflush(stdout);
+
+    QSettings settings;
+    if (settings.value("sendToConsoleDebug", true).toBool()) {  // <---- Put this value to true somewhere in your app
+        Console* console = new Console();
+        console->sendMessage("ConsoleThis$$" + QString(msg));
+        console->deleteLater();
+    }
+}
+
 Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
+
+    qInstallMsgHandler(myMessageOutput);
 
     // Create the Application UI object, this is where the main.qml file
     // is loaded and the application scene is set.
